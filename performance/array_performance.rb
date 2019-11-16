@@ -40,3 +40,40 @@ each    num=100000000:  5.445512   0.018514   5.464026 (  5.487644)
 - the runtime of sequencial access looks like O(N)
 - the performace of binary search is exellent!!!
 =end
+
+Benchmark.bm(60) do |x|
+  capacities = [100, 10000, 1000000, 100000000]
+  capacities.each do |capacity|
+    a = Array.new(capacity)
+    (capacity - 1).times do |i|
+      time = Benchmark.realtime {a.push(1)}
+      puts "%9d, %6f" % [i, time] if time > 0.001 # to find a timing of the extend of an array
+    end
+    x.report("push, which results the size = capacity - 1 cap=%9d:" % [capacity]) do
+      a.push(1)
+    end
+    x.report("push, which results the size = capacity     cap=%9d:" % [capacity]) do
+      a.push(1)
+    end
+    x.report("push, which results the size = capacity + 1 cap=%9d:" % [capacity]) do
+      a.push(1)
+    end
+  end
+end
+
+=begin
+user     system      total        real
+push, which results the size = capacity - 1 cap=      100:     0.000006   0.000005   0.000011 (  0.000003)
+push, which results the size = capacity     cap=      100:     0.000003   0.000001   0.000004 (  0.000003)
+push, which results the size = capacity + 1 cap=      100:     0.000002   0.000001   0.000003 (  0.000003)
+push, which results the size = capacity - 1 cap=    10000:     0.000002   0.000001   0.000003 (  0.000002)
+push, which results the size = capacity     cap=    10000:     0.000002   0.000000   0.000002 (  0.000003)
+push, which results the size = capacity + 1 cap=    10000:     0.000002   0.000000   0.000002 (  0.000002)
+push, which results the size = capacity - 1 cap=  1000000:     0.000006   0.000002   0.000008 (  0.000004)
+push, which results the size = capacity     cap=  1000000:     0.000003   0.000001   0.000004 (  0.000002)
+push, which results the size = capacity + 1 cap=  1000000:     0.000002   0.000001   0.000003 (  0.000003)
+push, which results the size = capacity - 1 cap=100000000:     0.000006   0.000001   0.000007 (  0.000004)
+push, which results the size = capacity     cap=100000000:     0.000003   0.000002   0.000005 (  0.000006)
+push, which results the size = capacity + 1 cap=100000000:     0.000002   0.000001   0.000003 (  0.000002)
+- when does it extend array size???
+=end
